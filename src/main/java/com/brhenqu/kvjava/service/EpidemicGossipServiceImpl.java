@@ -12,6 +12,7 @@ public class EpidemicGossipServiceImpl extends AbstractGossipService {
 
     private static final Logger logger = LoggerFactory.getLogger(EpidemicGossipServiceImpl.class);
 
+    // Inicializa os nós
     private final Node node1 = new Node(1);
     private final Node node2 = new Node(2);
     private final Node node3 = new Node(3);
@@ -22,8 +23,28 @@ public class EpidemicGossipServiceImpl extends AbstractGossipService {
         node2.addNeighbor(node3);
         node3.addNeighbor(node4);
         node4.addNeighbor(node1);
-        node1.hasData = true;
+        node1.hasData = true;  // Inicia com dados no node1
         logger.info("Initial data set on Node 1");
+    }
+
+    @Override
+    protected Node getNode1() {
+        return node1;
+    }
+
+    @Override
+    protected Node getNode2() {
+        return node2;
+    }
+
+    @Override
+    protected Node getNode3() {
+        return node3;
+    }
+
+    @Override
+    protected Node getNode4() {
+        return node4;
     }
 
     @Override
@@ -34,6 +55,7 @@ public class EpidemicGossipServiceImpl extends AbstractGossipService {
         spreadGossip(node4);
     }
 
+
     private void spreadGossip(Node node) {
         if (node.hasData) {
             Node randomNeighbor = getRandomNeighbor(node);
@@ -42,14 +64,5 @@ public class EpidemicGossipServiceImpl extends AbstractGossipService {
                 randomNeighbor.hasData = true;
             }
         }
-    }
-
-    @Override
-    public boolean isGossipComplete() {
-        boolean isComplete = node1.hasData && node2.hasData && node3.hasData && node4.hasData;
-        if (isComplete) {
-            logger.info("Gossip propagation complete among all nodes");
-        }
-        return isComplete;
     }
 }

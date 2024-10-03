@@ -12,6 +12,7 @@ public class PushPullGossipServiceImpl extends AbstractGossipService{
 
     private static final Logger logger = LoggerFactory.getLogger(PushPullGossipServiceImpl.class);
 
+    // Inicializa os nós
     private final Node node1 = new Node(1);
     private final Node node2 = new Node(2);
     private final Node node3 = new Node(3);
@@ -22,8 +23,28 @@ public class PushPullGossipServiceImpl extends AbstractGossipService{
         node2.addNeighbor(node3);
         node3.addNeighbor(node4);
         node4.addNeighbor(node1);
-        node1.hasData = true;
+        node1.hasData = true;  // Inicia com dados no node1
         logger.info("Initial data set on Node 1");
+    }
+
+    @Override
+    protected Node getNode1() {
+        return node1;
+    }
+
+    @Override
+    protected Node getNode2() {
+        return node2;
+    }
+
+    @Override
+    protected Node getNode3() {
+        return node3;
+    }
+
+    @Override
+    protected Node getNode4() {
+        return node4;
     }
 
     @Override
@@ -45,14 +66,5 @@ public class PushPullGossipServiceImpl extends AbstractGossipService{
                 node.hasData = true;
             }
         }
-    }
-
-    @Override
-    public boolean isGossipComplete() {
-        boolean isComplete = node1.hasData && node2.hasData && node3.hasData && node4.hasData;
-        if (isComplete) {
-            logger.info("Push-pull gossip propagation complete among all nodes");
-        }
-        return isComplete;
     }
 }
